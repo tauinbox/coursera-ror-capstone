@@ -34,8 +34,8 @@ RSpec.describe "ApiDevelopments", type: :request do
     end
     it "expose MongoDB-backed API resource" do
       object = Bar.create(name: 'test')
-      expect(foos_path).to eq('/api/foos')
-      get foo_path(object.id)
+      expect(bars_path).to eq('/api/bars')
+      get bar_path(object.id)
       expect(response).to have_http_status(:ok)
       expect(parsed_body['name']).to eq('test')      
     end
