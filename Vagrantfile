@@ -7,6 +7,7 @@ Vagrant.configure('2') do |config|
   config.vm.network :forwarded_port, guest: 3000, host: 3000
 
   config.vm.provision :shell, path: 'provision.sh', keep_color: true
+  # config.vm.provision :shell, path: 'startup.sh', run: 'always', privileged: false
 
   config.vm.provider 'virtualbox' do |v|
     v.memory = 1024
