@@ -14,10 +14,10 @@ RSpec.describe "ApiDevelopments", type: :request do
       object = Foo.create(name: 'test')
       expect(Foo.find(object.id).name).to eq('test')
     end
-    
+
     it "expose RDBMS-backed API resource" do
       object = Foo.create(name: 'test')
-      expect(foo_path).to eq('/api/foos')
+      expect(foos_path).to eq('/api/foos')
       get foo_path(object.id)
       expect(response).to have_http_status(:ok)
       expect(parsed_body['name']).to eq('test')
