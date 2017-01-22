@@ -65,6 +65,17 @@ type psql >/dev/null 2>&1 && echo "PostgreSQL already exists" || {
   sudo -u postgres createdb -O vagrant activerecord_unittest2  
 }
 
+# type mongo >/dev/null 2>&1 && echo "MongoDB already exists" || {
+#   echo installing MongoDB
+#   apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 >/dev/null 2>&1
+#   echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list >/dev/null 2>&1
+#   sudo apt-get update >/dev/null 2>&1
+#   sudo apt-get install -y mongodb-org >/dev/null 2>&1
+#   sudo mkdir -p /data/db >/dev/null 2>&1
+#   sudo chown -R vagrant /data/db >/dev/null 2>&1
+#   sudo apt-get -y install upstart-sysv >/dev/null 2>&1
+# }
+
 # Needed for docs generation.
 update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
