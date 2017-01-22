@@ -39,7 +39,10 @@ module CapstoneDemoapp
     # CORS config, allow any code from siteB.com to invoke any of methods mentioned below
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
-        origins 'siteB.com'
+        # origins 'siteB.com'
+        
+        # allow any origins (for development purposes only :)
+        origins '*'
 
         resource '/api/*', :headers => :any, :methods => [:get, :post, :put, :options]
       end
