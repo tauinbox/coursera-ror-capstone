@@ -10,6 +10,7 @@ development:
       # of host:port pairs. (required)
       hosts:
         - <%= ENV['MONGO_HOST'] ||= `netstat -rn | grep "^0.0.0.0 " | cut -d " " -f10` %>
+        # - <%= ENV['MONGO_HOST'] ||= 'localhost:27017' %>
       options:
 
   # Configure Mongoid specific options. (optional)
@@ -21,6 +22,7 @@ test:
       database: capstone_demoapp_test
       hosts:
         - <%= ENV['MONGO_HOST'] ||= `netstat -rn | grep "^0.0.0.0 " | cut -d " " -f10` %>
+        # - <%= ENV['MONGO_HOST'] ||= 'localhost:27017' %>
       options:
         read:
           mode: :primary
