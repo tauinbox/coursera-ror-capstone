@@ -36,6 +36,14 @@ module CapstoneDemoapp
     config.generators { |g| g.orm :active_record }
     # config.generators { |g| g.orm :mongoid }
 
+    # CORS config, allow any code from siteB.com to invoke any of methods mentioned below
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins 'siteB.com'
+
+        resource '/api/*', :headers => :any, :methods => [:get, :post, :put, :options]
+      end
+    end
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
