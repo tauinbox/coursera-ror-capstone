@@ -3,6 +3,9 @@ Rails.application.routes.draw do
     resources :states, except: [:new, :edit]
     resources :cities, except: [:new, :edit]
   end
+
+  root 'ui#index'
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
