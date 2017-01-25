@@ -8,11 +8,11 @@ default: &default
 
 development:
   <<: *default
-  database: m1_assignment_development
+  database: assignments_development
 
 test:
   <<: *default
-  database: m1_assignment_test
+  database: assignments_test
 
 production:
   adapter: postgresql
