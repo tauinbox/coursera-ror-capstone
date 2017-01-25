@@ -58,6 +58,8 @@ type gulp >/dev/null 2>&1 && echo "Gulp already exists" || {
   npm install gulp -g >/dev/null 2>&1
 }
 
+install SQLite sqlite3 libsqlite3-dev
+
 type psql >/dev/null 2>&1 && echo "PostgreSQL already exists" || {
   install PostgreSQL postgresql postgresql-contrib libpq-dev
   sudo -u postgres createuser --superuser vagrant
