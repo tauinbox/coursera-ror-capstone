@@ -5,9 +5,11 @@ Rails.application.routes.draw do
   end
 
   get "/client-assets/:name.:format", :to => redirect("/client/client-assets/%{name}.%{format}")
-  #  get "/", :to => redirect("/client/index.html")
 
-  get '/ui' => 'ui#index'
-  get '/ui#' => 'ui#index'
-  root 'ui#index'
+  # this is another way how we can redirect all requests to the main index page (the first one was commented out in ui_controller's index method)
+  get "/", :to => redirect("/client/index.html")
+
+  # get '/ui' => 'ui#index'
+  # get '/ui#' => 'ui#index'
+  # root 'ui#index'
 end
