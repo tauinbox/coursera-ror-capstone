@@ -3,7 +3,6 @@
 
   angular
     .module("spa-demo", [
-      "ui.router",
-      "spa-demo.foos"
+      "ui.router"
     ]);
 })();
