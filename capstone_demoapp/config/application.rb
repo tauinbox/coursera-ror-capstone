@@ -42,7 +42,10 @@ module CapstoneDemoapp
         # origins 'siteB.com'
         
         # allow any origins (for development purposes only :)
-        origins '*'
+        # origins '*'
+
+        # set orinigs to only from *github.io
+        origins /https:\/\/\w+\.github\.io/
 
         resource '/api/*', :headers => :any, :methods => [:get, :post, :put, :options]
       end
