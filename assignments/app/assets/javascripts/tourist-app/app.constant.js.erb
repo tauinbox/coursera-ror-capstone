@@ -1,0 +1,14 @@
+(function() {
+  "use strict";
+
+  angular
+    .module("tourist-app")
+    .constant("tourist-app.APP_CONFIG", {
+      server_url: "<%= ENV['RAILS_API_URL'] %>",
+
+      main_page_html: "<%= asset_path('tourist-app/pages/main.html') %>",
+
+      cities_html: "<%= asset_path('tourist-app/cities/cities.html') %>"
+    });
+
+})();

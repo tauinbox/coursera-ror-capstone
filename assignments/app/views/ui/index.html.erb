@@ -1,1 +1,19 @@
-<h1 align="center">Site is under construction</h1>
+<!DOCTYPE html>
+<html lang="en" ng-app="tourist-app">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%= stylesheet_link_tag    "tourist-app", :media => "all" %>
+    <%= javascript_include_tag "tourist-app" %>
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>Outer Layout Page</h1>
+      <span>(from app/views/ui/index.html.erb)</span>
+      <div ui-view></div>
+    </div>
+
+  </body>
+</html>
