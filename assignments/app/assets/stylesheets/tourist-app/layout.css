@@ -3,5 +3,13 @@
  */
 
  body {
-  background-color: lightgray;
+  background-color: lightblue;
+ }
+
+ .homepage {
+ 	background-color: darkgray;
+ }
+
+ .cities {
+ 	background-color: lightgray;
  }
