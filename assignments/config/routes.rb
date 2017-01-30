@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     resources :cities, except: [:new, :edit]
   end
 
+  get '/ui' => 'ui#index'
+  get '/ui#' => 'ui#index'
   root 'ui#index'
   
   # The priority is based upon order of creation: first created -> highest priority.
