@@ -17,6 +17,7 @@
 
 require 'mongoid-rspec'
 require_relative 'support/database_cleaners.rb'
+require_relative 'support/api_helper.rb'
 
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
