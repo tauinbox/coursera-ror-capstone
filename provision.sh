@@ -29,11 +29,11 @@ install Dependencies libfontconfig1 libfontconfig1-dev
 
 # install PhantomJS phantomjs
 
-echo installing PhantomJS
+echo installing PhantomJS v2.1.1
 # cd ~
 wget https://github.com/Medium/phantomjs/releases/download/v2.1.1/phantomjs-2.1.1-linux-x86_64.tar.bz2 >/dev/null 2>&1
 sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 >/dev/null 2>&1
-sudo mv phantomjs-2.1.1-linux-x86_64 /usr/local/share
+sudo mv phantomjs-2.1.1-linux-x86_64 /usr/local/share >/dev/null 2>&1
 sudo ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin
 
 echo installing Ruby
