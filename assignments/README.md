@@ -1,1 +1,1 @@
-# Assignments folder
+# Capstone Demo Application

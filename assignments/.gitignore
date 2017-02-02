@@ -11,3 +11,9 @@
 /log/*
 !/log/.keep
 /tmp
+*.swp
+
+/client/build
+/bower_components
+/node_modules
+/coverage
