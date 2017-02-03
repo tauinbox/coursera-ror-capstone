@@ -1,19 +1,19 @@
-From 73e2ddb295b5f9b2a124291a424e118510dbb606 Mon Sep 17 00:00:00 2001
+From 51d3f5d539598cfad25852bd0ae1b9d009bbacea Mon Sep 17 00:00:00 2001
 From: Alexander Tupavov <tauinbox@gmail.com>
-Date: Fri, 3 Feb 2017 08:56:59 +0300
-Subject: [PATCH] added assignment tests
+Date: Fri, 3 Feb 2017 11:16:38 +0300
+Subject: [PATCH 1/2] added assignment tests
 
 ---
- capstone_demoapp/spec/factories/foobars.rb         | 16 ++++++++++++++++
- capstone_demoapp/spec/features/manage_foos_spec.rb | 14 +++++++++++++-
- capstone_demoapp/spec/requests/api_foos_spec.rb    | 18 ++++++++++++++++++
- 3 files changed, 47 insertions(+), 1 deletion(-)
+ spec/factories/foobars.rb         | 22 +++++++++++++++++++++-
+ spec/features/manage_foos_spec.rb | 14 +++++++++++++-
+ spec/requests/api_foos_spec.rb    | 18 ++++++++++++++++++
+ 3 files changed, 52 insertions(+), 2 deletions(-)
 
-diff --git a/capstone_demoapp/spec/factories/foobars.rb b/capstone_demoapp/spec/factories/foobars.rb
-index 51a9cf4..83b47ae 100644
---- a/capstone_demoapp/spec/factories/foobars.rb
-+++ b/capstone_demoapp/spec/factories/foobars.rb
-@@ -1,3 +1,13 @@
+diff --git a/spec/factories/foobars.rb b/spec/factories/foobars.rb
+index 51a9cf4..5d3c07b 100644
+--- a/spec/factories/foobars.rb
++++ b/spec/factories/foobars.rb
+@@ -1,3 +1,17 @@
 +class CustomSequence
 +  def initialize(max)
 +    @value, @max = 0, max
@@ -22,12 +22,16 @@ index 51a9cf4..83b47ae 100644
 +  def next
 +    @value = @value >= @max ? 0 : (@value + 1)
 +  end
++
++  def peek
++    @value.to_s
++  end
 +end
 +
  FactoryGirl.define do
  
    factory :foo_fixed, class: 'Foo' do
-@@ -26,6 +36,12 @@ FactoryGirl.define do
+@@ -26,6 +40,12 @@ FactoryGirl.define do
      name { Faker::Name.name }
    end
  
@@ -40,10 +44,19 @@ index 51a9cf4..83b47ae 100644
    factory :foo_ctor, class: 'Foo' do
      transient do
        hash {}
-diff --git a/capstone_demoapp/spec/features/manage_foos_spec.rb b/capstone_demoapp/spec/features/manage_foos_spec.rb
+@@ -33,7 +53,7 @@ FactoryGirl.define do
+     initialize_with { Foo.new(hash) }
+   end
+ 
+-  factory :foo, :parent=>:foo_faker do
++  factory :foo, :parent=>:foo_faker_num do
+   end
+ 
+   factory :bar do
+diff --git a/spec/features/manage_foos_spec.rb b/spec/features/manage_foos_spec.rb
 index 397eccb..5450216 100644
---- a/capstone_demoapp/spec/features/manage_foos_spec.rb
-+++ b/capstone_demoapp/spec/features/manage_foos_spec.rb
+--- a/spec/features/manage_foos_spec.rb
++++ b/spec/features/manage_foos_spec.rb
 @@ -44,7 +44,7 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
        expect(page).to have_css("label", :text=>"Name:")
        expect(page).to have_css("input[name='name'][ng-model*='foo.name']")
@@ -72,10 +85,10 @@ index 397eccb..5450216 100644
 +    end
    end
  end
-diff --git a/capstone_demoapp/spec/requests/api_foos_spec.rb b/capstone_demoapp/spec/requests/api_foos_spec.rb
+diff --git a/spec/requests/api_foos_spec.rb b/spec/requests/api_foos_spec.rb
 index 9421635..607b98c 100644
---- a/capstone_demoapp/spec/requests/api_foos_spec.rb
-+++ b/capstone_demoapp/spec/requests/api_foos_spec.rb
+--- a/spec/requests/api_foos_spec.rb
++++ b/spec/requests/api_foos_spec.rb
 @@ -97,4 +97,22 @@ RSpec.describe "Foo API", type: :request do
        expect(response).to have_http_status(:not_found)
      end
