@@ -44,7 +44,7 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
       expect(page).to have_css("label", :text=>"Name:")
       expect(page).to have_css("input[name='name'][ng-model*='foo.name']")
       expect(page).to have_css("button[ng-click*='create()']", :text=>"Create Foo")
-      expect(page).to have_button("Create Foo")
+      expect(page).to have_button("Create Foo", disabled: true)
     end
 
     scenario "complete form" do
@@ -114,6 +114,18 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
         expect(page).to have_no_css("a",text:foo_state[:name])
       end
     end
+  end
 
+  feature "Create button disabled when no name" do
+    scenario "disabled when no name" do
+      visit root_path
+      within(:xpath,FOO_FORM_XPATH) do
+        expect(page).to have_selector("input", text: "")
+        expect(page).to have_css("input.ng-invalid")
+        expect(page).to have_css("button[disabled='disabled']")
+        expect(page).to have_css("button[ng-disabled*='$invalid']")
+        # expect(page).to have_button('Create Foo', disabled: true)
+      end      
+    end
   end
 end
