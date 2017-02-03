@@ -1,0 +1,104 @@
+From 73e2ddb295b5f9b2a124291a424e118510dbb606 Mon Sep 17 00:00:00 2001
+From: Alexander Tupavov <tauinbox@gmail.com>
+Date: Fri, 3 Feb 2017 08:56:59 +0300
+Subject: [PATCH] added assignment tests
+
+---
+ assignments/spec/factories/foobars.rb         | 16 ++++++++++++++++
+ assignments/spec/features/manage_foos_spec.rb | 14 +++++++++++++-
+ assignments/spec/requests/api_foos_spec.rb    | 18 ++++++++++++++++++
+ 3 files changed, 47 insertions(+), 1 deletion(-)
+
+diff --git a/assignments/spec/factories/foobars.rb b/assignments/spec/factories/foobars.rb
+index 51a9cf4..83b47ae 100644
+--- a/assignments/spec/factories/foobars.rb
++++ b/assignments/spec/factories/foobars.rb
+@@ -1,3 +1,13 @@
++class CustomSequence
++  def initialize(max)
++    @value, @max = 0, max
++  end
++
++  def next
++    @value = @value >= @max ? 0 : (@value + 1)
++  end
++end
++
+ FactoryGirl.define do
+ 
+   factory :foo_fixed, class: 'Foo' do
+@@ -26,6 +36,12 @@ FactoryGirl.define do
+     name { Faker::Name.name }
+   end
+ 
++  factory :foo_faker_num, class: 'Foo' do
++    sequence(:name, CustomSequence.new(9)) do |n|
++      Faker::Name.name + "#{n}"
++    end
++  end
++
+   factory :foo_ctor, class: 'Foo' do
+     transient do
+       hash {}
+diff --git a/assignments/spec/features/manage_foos_spec.rb b/assignments/spec/features/manage_foos_spec.rb
+index 397eccb..5450216 100644
+--- a/assignments/spec/features/manage_foos_spec.rb
++++ b/assignments/spec/features/manage_foos_spec.rb
+@@ -44,7 +44,7 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
+       expect(page).to have_css("label", :text=>"Name:")
+       expect(page).to have_css("input[name='name'][ng-model*='foo.name']")
+       expect(page).to have_css("button[ng-click*='create()']", :text=>"Create Foo")
+-      expect(page).to have_button("Create Foo")
++      expect(page).to have_button("Create Foo", disabled: true)
+     end
+ 
+     scenario "complete form" do
+@@ -114,6 +114,18 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
+         expect(page).to have_no_css("a",text:foo_state[:name])
+       end
+     end
++  end
+ 
++  feature "Create button disabled when no name" do
++    scenario "disabled when no name" do
++      visit root_path
++      within(:xpath,FOO_FORM_XPATH) do
++        expect(page).to have_selector("input", text: "")
++        expect(page).to have_css("input.ng-invalid")
++        expect(page).to have_css("button[disabled='disabled']")
++        expect(page).to have_css("button[ng-disabled*='$invalid']")
++        # expect(page).to have_button('Create Foo', disabled: true)
++      end      
++    end
+   end
+ end
+diff --git a/assignments/spec/requests/api_foos_spec.rb b/assignments/spec/requests/api_foos_spec.rb
+index 9421635..607b98c 100644
+--- a/assignments/spec/requests/api_foos_spec.rb
++++ b/assignments/spec/requests/api_foos_spec.rb
+@@ -97,4 +97,22 @@ RSpec.describe "Foo API", type: :request do
+       expect(response).to have_http_status(:not_found)
+     end
+   end
++
++  context "invalid Foo reports API error" do
++    let(:bad_statement) { {foo: {id: 1}} }
++
++    it "returns unprocessable entity when using incorrect statement" do
++      jpost foos_path, bad_statement
++
++      payload = parsed_body
++      # pp payload
++
++      expect(response).to have_http_status(:unprocessable_entity)
++      expect(response.content_type).to eq("application/json") 
++      expect(payload).to have_key("errors")
++      expect(payload["errors"]).to have_key("full_messages")
++      expect(payload["errors"]["full_messages"][0]).to include("ERROR")
++
++    end    
++  end
+ end
+-- 
+1.9.4.msysgit.2
+

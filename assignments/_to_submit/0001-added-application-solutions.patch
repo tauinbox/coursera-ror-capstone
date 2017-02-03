@@ -1,0 +1,62 @@
+From 6eb3e5c6827f38b8c536d85445d35753426707a7 Mon Sep 17 00:00:00 2001
+From: Alexander Tupavov <tauinbox@gmail.com>
+Date: Fri, 3 Feb 2017 09:03:52 +0300
+Subject: [PATCH] added application solutions
+
+---
+ capstone_demoapp/app/assets/javascripts/spa-demo/foos/foos.html |  5 +++--
+ capstone_demoapp/app/controllers/application_controller.rb      | 10 ++++++++++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/capstone_demoapp/app/assets/javascripts/spa-demo/foos/foos.html b/capstone_demoapp/app/assets/javascripts/spa-demo/foos/foos.html
+index 98dbb6a..843f6d0 100644
+--- a/capstone_demoapp/app/assets/javascripts/spa-demo/foos/foos.html
++++ b/capstone_demoapp/app/assets/javascripts/spa-demo/foos/foos.html
+@@ -2,7 +2,7 @@
+   <h3>Foos</h3>
+   <span>(from spa-demo/foos/foos.html)</span>
+ 
+-  <form>
++  <form name="fooForm">
+     <div>
+       <label>Name:</label>
+       <input name="name"
+@@ -12,7 +12,8 @@
+ 
+     <button ng-if="!foosVM.foo.id" 
+              type="submit"
+-             ng-click="foosVM.create()">Create Foo</button>  
++             ng-click="foosVM.create()"
++             ng-disabled="fooForm.$invalid">Create Foo</button>  
+     <div ng-if="foosVM.foo.id">
+       <button type="submit"
+               ng-click="foosVM.update()">Update Foo</button>
+diff --git a/capstone_demoapp/app/controllers/application_controller.rb b/capstone_demoapp/app/controllers/application_controller.rb
+index 91d44c0..5513fd6 100644
+--- a/capstone_demoapp/app/controllers/application_controller.rb
++++ b/capstone_demoapp/app/controllers/application_controller.rb
+@@ -5,6 +5,8 @@ class ApplicationController < ActionController::API
+   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+   rescue_from Mongoid::Errors::DocumentNotFound, with: :record_not_found
+ 
++  rescue_from ActiveRecord::StatementInvalid, with: :statement_invalid
++
+   protected
+     def record_not_found(exception) 
+       payload = {
+@@ -13,4 +15,12 @@ class ApplicationController < ActionController::API
+       render :json=>payload, :status=>:not_found
+       Rails.logger.debug exception.message
+     end
++
++    def statement_invalid(exception)
++      payload = {
++        errors: { full_messages: exception.message.split("\n") }
++      }
++      render json: payload, status: :unprocessable_entity
++      Rails.logger.debug exception.message
++    end
+ end
+-- 
+1.9.4.msysgit.2
+
