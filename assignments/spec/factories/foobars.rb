@@ -6,6 +6,10 @@ class CustomSequence
   def next
     @value = @value >= @max ? 0 : (@value + 1)
   end
+
+  def peek
+    @value.to_s
+  end
 end
 
 FactoryGirl.define do
@@ -49,7 +53,7 @@ FactoryGirl.define do
     initialize_with { Foo.new(hash) }
   end
 
-  factory :foo, :parent=>:foo_faker do
+  factory :foo, :parent=>:foo_faker_num do
   end
 
   factory :bar do
