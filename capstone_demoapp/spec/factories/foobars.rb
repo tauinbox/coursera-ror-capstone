@@ -1,3 +1,17 @@
+class CustomSequence
+  def initialize(max)
+    @value, @max = 0, max
+  end
+
+  def next
+    @value = @value >= @max ? 0 : (@value + 1)
+  end
+
+  def peek
+    @value.to_s
+  end
+end
+
 FactoryGirl.define do
 
   factory :foo_fixed, class: 'Foo' do
@@ -26,6 +40,12 @@ FactoryGirl.define do
     name { Faker::Name.name }
   end
 
+  factory :foo_faker_num, class: 'Foo' do
+    sequence(:name, CustomSequence.new(9)) do |n|
+      Faker::Name.name + "#{n}"
+    end
+  end
+
   factory :foo_ctor, class: 'Foo' do
     transient do
       hash {}
@@ -33,7 +53,7 @@ FactoryGirl.define do
     initialize_with { Foo.new(hash) }
   end
 
-  factory :foo, :parent=>:foo_faker do
+  factory :foo, :parent=>:foo_faker_num do
   end
 
   factory :bar do
