@@ -47,7 +47,10 @@ module CapstoneDemoapp
         # set orinigs to only from *github.io
         origins /https:\/\/\w+\.github\.io/
 
-        resource '/api/*', :headers => :any, :methods => [:get, :post, :put, :options]
+        resource '*', 
+            :headers => :any, 
+            :expose => ['access-token', 'expiry', 'token-type', 'uid', 'client'],
+            :methods => [:get, :post, :put, :options]
       end
     end
 
