@@ -39,7 +39,15 @@ RSpec.describe "Authentication Api", type: :request do
       end
 
       context 'non-unique information' do
-        it 'reports non-unique email'
+        it 'reports non-unique email' do
+          signup user_props, :ok
+          signup user_props.slice(:email), :unprocessable_entity
+          # pp parsed_body
+          payload = parsed_body
+          expect(payload['errors']).to include('email')
+          expect(payload['errors']).to include('full_messages')
+          expect(payload['errors']['full_messages']).to include("Email has already been taken")
+        end
       end
     end    
   end
@@ -72,12 +80,52 @@ RSpec.describe "Authentication Api", type: :request do
         expect(response.headers).to include('token-type' => 'Bearer')
       end
 
-      it 'grants access to resource'
-      it 'grants access to resource multiple times'
-      it 'log out'
+      it 'extracts access headers' do
+        expect(access_tokens?).to be true
+        expect(access_tokens).to include('uid' => account[:uid])
+        expect(access_tokens).to include('access-token')
+        expect(access_tokens).to include('client')
+        expect(access_tokens).to include('token-type' => 'Bearer')        
+      end
+
+      it 'grants access to resource' do
+        jget authn_checkme_path#, access_tokens
+        #pp parsed_body
+        expect(response).to have_http_status(:ok)
+
+        payload = parsed_body
+        expect(payload).to include('id' => account[:id])
+        expect(payload).to include('uid' => account[:uid])
+      end
+
+      it 'grants access to resource multiple times' do
+        (1..10).each do |idx|
+          # puts idx
+          # sleep 6
+
+          # quick calls < 5 sec use same tokens
+          jget authn_checkme_path#, access_tokens
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      it 'log out' do
+        logout :ok
+        expect(access_tokens?).to be false
+
+        get authn_checkme_path
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
     context 'invalid password' do
-      it 'rejects credentials'
+      it 'rejects credentials' do
+        logout :ok
+        account[:password] = 'wrong password'
+        login account, :unauthorized
+        # pp parsed_body
+        expect(response).to have_http_status(:unauthorized)
+        expect(parsed_body).to include("errors"=>["Invalid login credentials. Please try again."])
+      end
     end
   end  
 
