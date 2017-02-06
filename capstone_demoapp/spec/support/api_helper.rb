@@ -14,6 +14,14 @@ module ApiHelper
   def signup registration, status = :ok
     jpost user_registration_path, registration
     expect(response).to have_http_status(status)
+
+    # return payload if any error occurs
+    payload = parsed_body
+
+    if response.ok?
+      # return registration if response was ok
+      registration.merge(id: payload['data']['id'], uid: payload['data']['uid'])
+    end
   end
 end
 
