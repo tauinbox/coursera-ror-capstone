@@ -19,9 +19,15 @@ module ApiHelper
     payload = parsed_body
 
     if response.ok?
-      # return registration if response was ok
+      # return registration object with augmented id and uid  if response was ok
       registration.merge(id: payload['data']['id'], uid: payload['data']['uid'])
     end
+  end
+
+  def login credentials, status = :ok
+    jpost user_session_path, credentials.slice(:email, :password)
+    expect(response).to have_http_status(status)
+    return response.ok? ? parsed_body['data'] : parsed_body
   end
 end
 
