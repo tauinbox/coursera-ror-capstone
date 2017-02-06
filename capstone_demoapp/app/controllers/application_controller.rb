@@ -4,6 +4,8 @@ class ApplicationController < ActionController::API
   #make the connection between controller action and associated view
   include ActionController::ImplicitRender
 
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from Mongoid::Errors::DocumentNotFound, with: :record_not_found
 
@@ -25,4 +27,8 @@ class ApplicationController < ActionController::API
       render json: payload, status: :unprocessable_entity
       Rails.logger.debug exception.message
     end
+
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+    end    
 end
