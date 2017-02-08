@@ -56,14 +56,14 @@ module CapstoneDemoapp
 
     config.generators do |g|
       g.test_framework :rspec,
-        model_specs: :true,
-        routing_specs: :false,
-        controller_specs: :false,
-        helper_specs: :false,
-        view_specs: :false,
-        request_specs: :true,
-        policy_specs: :false,
-        feature_specs: :true
+        model_specs: true,
+        routing_specs: false,
+        controller_specs: false,
+        helper_specs: false,
+        view_specs: false,
+        request_specs: true,
+        policy_specs: false,
+        feature_specs: true
     end
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
