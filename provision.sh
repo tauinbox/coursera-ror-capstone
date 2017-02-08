@@ -25,7 +25,7 @@ apt-get -y update >/dev/null 2>&1
 
 install Dependencies git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libxml2 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev libncurses5-dev libxft-dev chrpath 
 install Dependencies libfreetype6 libfreetype6-dev
-install Dependencies libfontconfig1 libfontconfig1-dev
+install Dependencies libfontconfig1 libfontconfig1-dev libgconf-2-4
 
 # install PhantomJS phantomjs
 
@@ -35,6 +35,14 @@ wget https://github.com/Medium/phantomjs/releases/download/v2.1.1/phantomjs-2.1.
 sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 >/dev/null 2>&1
 sudo mv phantomjs-2.1.1-linux-x86_64 /usr/local/share >/dev/null 2>&1
 sudo ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin
+
+# echo installing Chromedriver
+# wget -N http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip -P ~/Downloads >/dev/null 2>&1
+# unzip ~/Downloads/chromedriver_linux64.zip -d ~/Downloads >/dev/null 2>&1
+# chmod +x ~/Downloads/chromedriver
+# sudo mv -f ~/Downloads/chromedriver /usr/local/share/chromedriver
+# sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+# sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
 echo installing Ruby
 apt-get install Ruby ruby2.3 ruby2.3-dev >/dev/null 2>&1
