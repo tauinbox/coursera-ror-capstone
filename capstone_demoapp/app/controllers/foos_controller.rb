@@ -2,35 +2,27 @@ class FoosController < ApplicationController
   before_action :set_foo, only: [:show, :update, :destroy]
   wrap_parameters :foo, include: ["name"]
 
-  # GET /foos
-  # GET /foos.json
   def index
     @foos = Foo.all
-
-    # render json: @foos
+    #render json: @foos
   end
 
-  # GET /foos/1
-  # GET /foos/1.json
   def show
-    # render json: @foo
+    #render json: @foo
   end
 
-  # POST /foos
-  # POST /foos.json
   def create
+    #sleep 2.5
     @foo = Foo.new(foo_params)
 
     if @foo.save
-      # render json: @foo, status: :created, location: @foo
+      #render json: @foo, status: :created, location: @foo
       render :show, status: :created, location: @foo
     else
       render json: @foo.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /foos/1
-  # PATCH/PUT /foos/1.json
   def update
     @foo = Foo.find(params[:id])
 
@@ -41,8 +33,6 @@ class FoosController < ApplicationController
     end
   end
 
-  # DELETE /foos/1
-  # DELETE /foos/1.json
   def destroy
     @foo.destroy
 

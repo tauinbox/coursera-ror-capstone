@@ -97,22 +97,4 @@ RSpec.describe "Foo API", type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
-
-  context "invalid Foo reports API error" do
-    let(:bad_statement) { {foo: {id: 1}} }
-
-    it "returns unprocessable entity when using incorrect statement" do
-      jpost foos_path, bad_statement
-
-      payload = parsed_body
-      # pp payload
-
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(response.content_type).to eq("application/json") 
-      expect(payload).to have_key("errors")
-      expect(payload["errors"]).to have_key("full_messages")
-      expect(payload["errors"]["full_messages"][0]).to include("ERROR")
-
-    end    
-  end
 end
