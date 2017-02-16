@@ -3,7 +3,7 @@ class ThingsController < ApplicationController
   helper ThingsHelper
   before_action :set_thing, only: [:show, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
-  wrap_parameters :thing, include: ["name", "description", "notes"]
+  wrap_parameters :thing, include: ["name", "description", "notes", "tags"]
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: [:index]
 
@@ -23,13 +23,14 @@ class ThingsController < ApplicationController
 
   def create
     authorize Thing
-    @thing = Thing.new(thing_params)
+    @thing = Thing.new(thing_params.except(:tags))
 
     User.transaction do
       if @thing.save
         role=current_user.add_role(Role::ORGANIZER,@thing)
         @thing.user_roles << role.role_name
         role.save!
+        @thing.create_type(tags: thing_params.slice(:tags)['tags'].split(",")) if thing_params.key?(:tags)
         render :show, status: :created, location: @thing
       else
         render json: {errors:@thing.errors.messages}, status: :unprocessable_entity
@@ -40,7 +41,9 @@ class ThingsController < ApplicationController
   def update
     authorize @thing
 
-    if @thing.update(thing_params)
+    if @thing.update(thing_params.except(:tags))
+      @thing.type.destroy if @thing.type
+      @thing.create_type(tags: thing_params.slice(:tags)['tags'].split(",")) if thing_params.key?(:tags)
       head :no_content
     else
       render json: {errors:@thing.errors.messages}, status: :unprocessable_entity
@@ -63,6 +66,6 @@ class ThingsController < ApplicationController
     def thing_params
       params.require(:thing).tap {|p|
           p.require(:name) #throws ActionController::ParameterMissing
-        }.permit(:name, :description, :notes)
+        }.permit(:name, :description, :notes, :tags)
     end
 end
