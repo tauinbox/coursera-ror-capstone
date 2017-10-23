@@ -4,7 +4,8 @@ function install {
   dpkg -s $1 &>/dev/null 2>&1 && echo $1 already exists || {
     echo installing $1
     shift
-    apt-get -y install "$@" >/dev/null 2>&1
+    # apt-get -y install "$@" >/dev/null 2>&1
+    apt-get -y install "$@"
   }
 }
 
@@ -45,36 +46,36 @@ sudo ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/loc
 # sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
 echo installing Ruby
-apt-get install Ruby ruby2.3 ruby2.3-dev >/dev/null 2>&1
-update-alternatives --set ruby /usr/bin/ruby2.3 >/dev/null 2>&1
-update-alternatives --set gem /usr/bin/gem2.3 >/dev/null 2>&1
+apt-get install -y Ruby ruby2.3 ruby2.3-dev
+update-alternatives --set ruby /usr/bin/ruby2.3
+update-alternatives --set gem /usr/bin/gem2.3
 
 type rails >/dev/null 2>&1 && echo "Rails already exists" || {
   echo installing Rails
-  gem install rails -v 4.2.6 --no-ri --no-doc >/dev/null 2>&1
+  gem install rails -v 4.2.6 --no-ri --no-doc
 }
 
 type rails-api >/dev/null 2>&1 && echo "Rails-API already exists" || {
   echo installing Rails-API
-  gem install rails-api >/dev/null 2>&1
+  gem install rails-api
 }
 
 echo installing Bundler
-gem install bundler --no-ri --no-doc >/dev/null 2>&1
+gem install bundler --no-ri --no-doc
 
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - >/dev/null 2>&1
 install NodeJs nodejs
 
-install ImageMagic imagemagick
+install ImageMagick imagemagick
 
 type bower >/dev/null 2>&1 && echo "Bower already exists" || {
   echo installing Bower
-  npm install bower -g >/dev/null 2>&1
+  npm install bower -g
 }
 
 type gulp >/dev/null 2>&1 && echo "Gulp already exists" || {
   echo installing Gulp
-  npm install gulp -g >/dev/null 2>&1
+  npm install gulp -g
 }
 
 install SQLite sqlite3 libsqlite3-dev
@@ -83,7 +84,7 @@ type psql >/dev/null 2>&1 && echo "PostgreSQL already exists" || {
   install PostgreSQL postgresql postgresql-contrib libpq-dev
   sudo -u postgres createuser --superuser vagrant
   sudo -u postgres createdb -O vagrant activerecord_unittest
-  sudo -u postgres createdb -O vagrant activerecord_unittest2  
+  sudo -u postgres createdb -O vagrant activerecord_unittest2
 }
 
 # type mongo >/dev/null 2>&1 && echo "MongoDB already exists" || {
